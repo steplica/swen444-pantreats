@@ -1,6 +1,6 @@
-# use-it-or-lose-it
+# pantreats
 
-> Use It Or Lose It
+> Pantreats
 
 ## Build Setup
 

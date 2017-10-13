@@ -1,7 +1,7 @@
 <template>
   <div>
     <md-toolbar>
-      <h2 class="md-title" style="flex: 1">Use It Or Lose It</h2>
+      <h2 class="md-title" style="flex: 1">Pantreats</h2>
 
       <md-button class="md-icon-button">
         <md-icon>search</md-icon>

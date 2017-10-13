@@ -1,10 +1,10 @@
 import Firebase from 'firebase'
 
 let config = {
-  apiKey: "AIzaSyBG96HNJ0xZfFDlsdhYoUV41MzSZ8vrfmQ",
-  authDomain: "use-it-or-lose-it.firebaseapp.com",
-  databaseURL: "https://use-it-or-lose-it.firebaseio.com",
-  projectId: "use-it-or-lose-it",
+  apiKey: "AIzaSyDfxRhV6rSmLkL4VQrLaBFrZfDLhC5rX9E",
+  authDomain: "pantreats.firebaseapp.com",
+  databaseURL: "https://pantreats.firebaseio.com",
+  projectId: "pantreats",
   storageBucket: "",
   messagingSenderId: "3349860187"
 }
