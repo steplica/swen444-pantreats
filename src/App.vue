@@ -16,5 +16,6 @@
   }
 </script>
 
-<style>
+<style lang="stylus">
+  @require './stylus/main.styl'
 </style>
