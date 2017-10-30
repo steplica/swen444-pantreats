@@ -28,9 +28,20 @@ Vue.material.registerTheme('default', {
   	color: 'brown',
   	hue: 700,
   },
+  secondary: {
+    color: 'orange',
+    hue: 50,
+  },
   accent: {
-      color: 'blue-grey',
-      hue: 200,
+    color: 'blue-grey',
+    hue: 200,
+  },
+  accentSecondary: {
+    color: '#CBAE82'
+  },
+  accentTertiary: {
+    color: 'brown',
+    hue: 200,
   },
   warn: 'red',
   background: {
