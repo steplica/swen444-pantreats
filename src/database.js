@@ -5,8 +5,8 @@ let config = {
   authDomain: "pantreats.firebaseapp.com",
   databaseURL: "https://pantreats.firebaseio.com",
   projectId: "pantreats",
-  storageBucket: "",
-  messagingSenderId: "3349860187"
+  storageBucket: "pantreats.appspot.com",
+  messagingSenderId: "599821562839"
 }
 
 const app = Firebase.initializeApp(config)

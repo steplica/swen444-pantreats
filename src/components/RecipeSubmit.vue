@@ -133,11 +133,14 @@
   import db from '../database';
   import router from 'vue-router';
   import uuidV4 from 'uuid/v4';
-  import VSelect from "vuetify/es5/components/VSelect/VSelect";
-  import MdLayout from "../../node_modules/vue-material/src/components/mdLayout/mdLayout.vue";
-  import MdInput from "../../node_modules/vue-material/src/components/mdInputContainer/mdInput.vue";
-  import VTextField from "vuetify/es5/components/VTextField/VTextField";
+  import VSelect from 'vuetify/es5/components/VSelect/VSelect';
+  import MdLayout from '../../node_modules/vue-material/src/components/mdLayout/mdLayout.vue';
+  import MdInput from '../../node_modules/vue-material/src/components/mdInputContainer/mdInput.vue';
+  import VTextField from 'vuetify/es5/components/VTextField/VTextField';
 
+  const storageRef = Firebase.storage().ref(); // TODO: How do I put this in database.js like we did with db?
+  const ingredientsRef = db.ref('ingredients/');
+  const cookwareRef = db.ref('cookware/');
   export default {
     components: {
       VTextField,
@@ -168,17 +171,17 @@
         ]
       };
     },
-    mounted: function() {
+    mounted() {
       // Load cookware dropdown options
-      var cookware = [];
-      db.ref('cookware/').orderByChild('description').on('child_added', function(c) {
+      const cookware = [];
+        cookwareRef.orderByChild('description').on('child_added', (c) => {
         cookware.push(c.val().description);
       });
       this.cookwareOptions = cookware;
 
       // Load ingredient dropdown options
-      var ingredients = [];
-      db.ref('ingredients/').orderByChild('name').on('child_added', function(i) {
+      const ingredients = [];
+      ingredientsRef.orderByChild('name').on('child_added', (i) => {
         ingredients.push(i.val().name);
       });
       this.ingredientOptions = ingredients;
@@ -187,29 +190,27 @@
       onFileChange(e) {
         this.showCarousel = false; // Reinitialization hack because dynamic images won't be supported until v1.0
 
-        var files = e.target.files || e.dataTransfer.files;
+        const files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
           return;
         }
 
-        var storageRef = Firebase.storage().ref(); // TODO: How do I put this in database.js like we did with db?
+        const fileList = [];
+        const photoList = [];
 
-        var fileList = [];
-        var photoList = [];
+        files.forEach((file) => {
+            fileList.push({src: window.URL.createObjectURL(file)});
 
-        for (var i = 0; i < files.length; i++) {
-          fileList.push({src: window.URL.createObjectURL(files[i])});
-
-          var uploadTask = storageRef.child('images/recipes/' + uuidV4()).put(files[i]);
-          uploadTask.on('state_changed', function(snapshot) {
-            // TODO: Show upload progress?
-          }, function(error) {
-            // TODO: Show snackbar
-          }, function() { // Success
-            // TODO: Show snackbar
-            photoList.push(uploadTask.snapshot.downloadURL); // TODO: Might want to store ref instead of just retrieval URL
-          });
-        }
+            const uploadTask = storageRef.child('images/recipes/' + uuidV4()).put(file);
+            uploadTask.on('state_changed', (snapshot) => {
+                // TODO: Show upload progress?
+            }, (error) => {
+                // TODO: Show snackbar
+            }, () => { // Success
+                // TODO: Show snackbar
+                photoList.push(uploadTask.snapshot.downloadURL); // TODO: Might want to store ref instead of just retrieval URL
+            });
+        });
         this.localPhotos = fileList;
         this.photos = photoList;
         this.$nextTick(() => (this.showCarousel = true));
@@ -220,19 +221,17 @@
           submitter: Firebase.auth().currentUser.uid,
           name: this.recipeName,
           description: this.recipeDescription,
-          ingredients: this.ingredients.filter(x => x.trim() != ''),
-          prepTime: (parseInt(this.prepTimeHr) * 60 + parseInt(this.prepTimeMin)),
-          cookTime: (parseInt(this.cookTimeHr) * 60 + parseInt(this.cookTimeMin)),
+          ingredients: this.ingredients.filter(x => x.trim() !== ''),
+          prepTime: (parseInt(this.prepTimeHr) * 60) + parseInt(this.prepTimeMin),
+          cookTime: (parseInt(this.cookTimeHr) * 60) + parseInt(this.cookTimeMin),
           servings: this.servings,
-          cookware: this.cookware.filter(x => x.trim() != ''),
+          cookware: this.cookware.filter(x => x.trim() !== ''),
           photos: this.photos,
-          tags: this.tags.filter(x => x.trim() != ''),
-          steps: this.recipeSteps.map(x => x.text).filter(x => x.trim() != '')
+          tags: this.tags.filter(x => x.trim() !== ''),
+          steps: this.recipeSteps.map(x => x.text).filter(x => x.trim() !== ''),
         });
       },
-      firebase() {
-        return {};
-      }
+      firebase() {},
     }
   }
 </script>
