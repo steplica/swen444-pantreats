@@ -12,12 +12,16 @@
         </v-btn>
 
         <!-- Login form -->
-        <v-card v-if="!isUserLoggedIn" class="accent-tertiary">
+        <v-card v-if="!isUserLoggedIn" style="width: 300px;" class="accent-tertiary">
+          <v-alert color="error" icon="error" :value="errorMessage">
+            {{errorMessage}}
+          </v-alert>
           <v-card-actions style="margin: 16px; text-align: center">
             <v-layout column>
-              <v-form lazyValidation @submit.stop.prevent="login">
-                <v-text-field v-model="email" label="Email" type="email" required></v-text-field>
-                <v-text-field v-model="password" label="Password" type="password" required></v-text-field>
+              <!-- TODO: Replace native validation with custom validation if it proves to be an issue during user testing -->
+              <v-form lazy-validation @submit.stop.prevent="login">
+                <v-text-field @input="errorMessage = false;" v-model="email" label="Email" type="email" required></v-text-field>
+                <v-text-field @input="errorMessage = false;" v-model="password" label="Password" type="password" required></v-text-field>
                 <v-btn block class="btn-dropdown" type="submit" color="primary">Log in</v-btn>
                 <v-btn block class="btn-dropdown" @click.native="googleSignin"><img id="img-google-logo"
                             src="/static/google-favicon-vector.png"/>Sign in with Google</v-btn>
@@ -80,6 +84,7 @@
         // Login form
         email: undefined,
         password: undefined,
+        errorMessage: undefined,
       }
     },
     // TODO: The unauthenticated view is briefly visible on refresh; how can we avoid this?
@@ -100,12 +105,23 @@
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password') {
-              // TODO: Replace with snackbar or error text
-              alert('Wrong password.');
-            } else {
-              // TODO: Replace with snackbar or error text
-              alert(errorMessage);
+            switch(errorCode) {
+              case 'auth/wrong-password':
+                this.errorMessage = 'Incorrect password.';
+                this.password = undefined;
+                break;
+              case 'auth/user-not-found':
+                this.errorMessage = 'No user was found with that email address.';
+                this.email = undefined;
+                break;
+              case 'auth/invalid-email':
+                this.errorMessage = 'Please check that your email is correct.';
+                break;
+              case 'auth/user-disabled':
+                this.errorMessage = 'Your account has been disabled. Please contact support for assistance.';
+                break;
+              default:
+                alert(errorMessage); // This should never happen
             }
             console.log(error);
           });
