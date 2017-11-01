@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-toolbar>
+    <md-toolbar class="toolbar">
       <h2 class="md-title" style="flex: 1">Pantreats</h2>
 
       <md-button class="md-icon-button">
