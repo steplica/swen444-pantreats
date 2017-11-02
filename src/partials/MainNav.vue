@@ -108,7 +108,7 @@
       login(event) {
         Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
           // Login was successful
-          hideAndClearMenu();
+          this.hideAndClearMenu();
           this.isUserLoggedIn = true;
         })
           .catch((error) => {
@@ -137,7 +137,7 @@
         },
       logout(event) {
         Firebase.auth().signOut().then((result) => {
-          hideAndClearMenu();
+          this.hideAndClearMenu();
           this.isUserLoggedIn = false;
         }, function(error) {
 
@@ -146,7 +146,7 @@
       googleSignin(event) {
         const provider = new Firebase.auth.GoogleAuthProvider();
         Firebase.auth().signInWithPopup(provider).then((result) => {
-          hideAndClearMenu();
+          this.hideAndClearMenu();
           this.isUserLoggedIn = true;
         }).catch((error) => {
           const errorCode = error.code;
