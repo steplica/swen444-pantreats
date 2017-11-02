@@ -13,15 +13,16 @@
 
         <!-- Login form -->
         <v-card v-if="!isUserLoggedIn" style="width: 300px;" class="accent-tertiary">
-          <v-alert color="error" icon="error" :value="errorMessage">
-            {{errorMessage}}
+          <v-alert :color="errorMessage ? 'error' : 'warning'" :icon="errorMessage ? 'warning' : 'priority_high'"
+                   :value="errorMessage || warnMessage">
+            {{errorMessage ? errorMessage : warnMessage}}
           </v-alert>
           <v-card-actions style="margin: 16px; text-align: center">
             <v-layout column>
               <!-- TODO: Replace native validation with custom validation if it proves to be an issue during user testing -->
               <v-form lazy-validation @submit.stop.prevent="login">
-                <v-text-field @input="errorMessage = false;" v-model="email" label="Email" type="email" required></v-text-field>
-                <v-text-field @input="errorMessage = false;" v-model="password" label="Password" type="password" required></v-text-field>
+                <v-text-field @input="errorMessage = false; warnMessage = false;" v-model="email" label="Email" type="email" required></v-text-field>
+                <v-text-field @input="errorMessage = false; warnMessage = false;" v-model="password" label="Password" type="password" required></v-text-field>
                 <v-btn block class="btn-dropdown" type="submit" color="primary">Log in</v-btn>
                 <v-btn block class="btn-dropdown" @click.native="googleSignin"><img id="img-google-logo"
                             src="/static/google-favicon-vector.png"/>Sign in with Google</v-btn>
@@ -85,6 +86,7 @@
         email: undefined,
         password: undefined,
         errorMessage: undefined,
+        warnMessage: undefined
       }
     },
     // TODO: The unauthenticated view is briefly visible on refresh; how can we avoid this?
@@ -96,10 +98,17 @@
       })
     },
     methods: {
+      hideAndClearMenu() {
+        this.showMenu = false;
+        this.errorMessage = undefined;
+        this.warnMessage = undefined;
+        this.email = undefined;
+        this.password = undefined;
+      },
       login(event) {
         Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
           // Login was successful
-          this.showMenu = false;
+          hideAndClearMenu();
           this.isUserLoggedIn = true;
         })
           .catch((error) => {
@@ -121,29 +130,48 @@
                 this.errorMessage = 'Your account has been disabled. Please contact support for assistance.';
                 break;
               default:
-                alert(errorMessage); // This should never happen
+                this.errorMessage = 'Something went wrong on our end. Please contact support for assistance.'; // This should never happen
             }
             console.log(error);
           });
         },
       logout(event) {
         Firebase.auth().signOut().then((result) => {
-          this.showMenu = false;
+          hideAndClearMenu();
           this.isUserLoggedIn = false;
         }, function(error) {
-          // TODO
+
         });
       },
       googleSignin(event) {
         const provider = new Firebase.auth.GoogleAuthProvider();
         Firebase.auth().signInWithPopup(provider).then((result) => {
-          const token = result.credential.accessToken;
-          const user = result.user;
+          hideAndClearMenu();
+          this.isUserLoggedIn = true;
         }).catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           const email = error.email;
           const credential = error.credential;
+          switch (errorCode) {
+            case 'auth/account-exists-with-different-credential':
+              // TODO: We *should* link the two accounts but it's pretty much irrelevant for this assignment:
+              // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInWithPopup
+              this.errorMessage = 'Please sign in with the method you used to create your account.';
+              break;
+            case 'auth/cancelled-popup-request':
+              this.warnMessage = 'Please only open one popup at a time.';
+              break;
+            case 'auth/popup-blocked':
+              this.errorMessage = 'Your browser blocked the login dialog.';
+              break;
+            case 'auth/popup-closed-by-user':
+              this.warnMessage = 'The popup was closed before you could be authenticated. Please try again.';
+              break;
+            default: // i.e. errors the user can't fix
+              this.errorMessage = 'Something went wrong on our end. Please contact support for assistance.';
+          }
+          console.log(error);
         });
       },
       routeRegister(event) {
