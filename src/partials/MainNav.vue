@@ -5,7 +5,7 @@
       <router-link to="/"><v-toolbar-title class="white--text">Pantreats</v-toolbar-title></router-link>
       <v-spacer></v-spacer>
 
-      <v-menu open-on-hover bottom offset-y v-model="showMenu" :offset-overflow="true" :close-on-content-click="false">
+      <v-menu bottom offset-y v-model="showMenu" :offset-overflow="true" :close-on-content-click="false">
         <v-btn v-if="!isUserLoggedIn" flat slot="activator">Log in / Register</v-btn>
         <v-btn flat v-if="isUserLoggedIn" slot="activator">
           <v-icon large left>account_circle</v-icon>My Account<v-icon>arrow_drop_down</v-icon>
