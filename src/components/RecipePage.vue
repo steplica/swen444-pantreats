@@ -15,7 +15,16 @@
     <div id="recipePage">
         <!-- Summary -->
         <div id="recipeSummary">
-            Summary Placeholder
+            <md-layout md-align="center">
+                <h5>{{name}}</h5>
+            </md-layout>
+
+            <!--
+             Score -->
+            <!--
+             Reviews | made it | photos
+             Recipe by: Username -->
+             {{description}}
         </div>
         <!-- Images -->
         <div id="recipeImages">
@@ -43,7 +52,30 @@
 <!-- JS -->
 <script>
     export default {
-      name: 'recipePage'
+      name: 'recipePage',
+      data() {
+        return {
+          //Temporary recipe data
+          "submitter": "TxNVpLUsgAZc5yuoGul",
+          "name": "Chicken Pot Pie",
+          "description": "A delicious chicken pot pie",
+          "ingredients": {
+            "0": "chicken",
+            "1": "flour"
+          },
+          "steps": {
+            "0": "Put chicken in a pie (any kind), and then put that pie in a pot, and put the pot in the oven.",
+            "1": "Cook for an hour at 500 degrees."
+          },
+          "prepTime": 20,
+          "cookTime": 60,
+          "servings": 5,
+          "photos": {
+            "0": "gs://bucket/images/RxCOpBQsgWVc5yuoPPK.jpg"
+          },
+          "rating": 4.3
+        };
+      }
     }
 </script>
 
