@@ -1,6 +1,13 @@
 <template>
   <div class="register">
-    <div style="margin: 0 auto;">
+    <div style="margin: 0 auto;
+                .flex-container {
+                  display: flex;
+                  width: 400px;
+                  height: 500px;
+                  border: 4px solid tan;
+                  background-color: white;
+                }">
       <form novalidate @submit.stop.prevent="register">
         <md-input-container>
           <label>First Name</label>
