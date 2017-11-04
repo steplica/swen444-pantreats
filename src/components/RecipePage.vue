@@ -25,6 +25,7 @@
                 <md-button class="md-primary">{{madeIt}} Made It</md-button>
                 <md-button class="md-primary">{{photos.length}} Photos</md-button>
             </div>
+
             <!-- Recipe author and description -->
             <span class="md-body-2">Recipe by <u>{{submitter}}</u></span><br>
             <span class="md-subheading">{{description}}</span><br>
@@ -32,20 +33,21 @@
             <!-- Save | Made It | Review | Report -->
             <div id="summaryFlexButtons">
                 <!-- Save buttons -->
-                <md-button v-if="!mock.savedIt" class="summaryButtons md-raised md-accent" v-on:click="toggleSavedIt">Save</md-button>
-                <md-button v-else class="summaryButtons md-warn" v-on:click="toggleSavedIt">Saved</md-button>
+                <md-button v-if="!mock.savedIt" class="summaryButtons md-raised md-accent md-dense" v-on:click="toggleSavedIt">Save</md-button>
+                <md-button v-else class="summaryButtons" v-on:click="toggleSavedIt">Saved</md-button>
 
                 <!-- Made it buttons -->
-                <md-button v-if="!mock.madeIt" class="summaryButtons md-raised md-accent" v-on:click="toggleMadeIt">I Made It</md-button>
-                <md-button v-else class="summaryButtons md-warn" v-on:click="toggleMadeIt">Made It</md-button>
+                <md-button v-if="!mock.madeIt" class="summaryButtons md-raised md-accent md-dense" v-on:click="toggleMadeIt">I Made It</md-button>
+                <md-button v-else class="summaryButtons" v-on:click="toggleMadeIt">Made It</md-button>
 
                 <!-- Review buttons -->
-                <md-button class="summaryButtons md-raised md-accent">Review</md-button>
+                <md-button class="summaryButtons md-raised md-accent md-dense">Review</md-button>
 
                 <!-- Report buttons -->
-                <md-button class="summaryButtons md-raised md-accent">Report</md-button>
+                <md-button class="summaryButtons md-raised md-accent md-dense">Report</md-button>
             </div>
         </div>
+
         <!-- Images -->
         <div id="recipeImages">
             <!-- Primary image -->
@@ -57,51 +59,79 @@
                 <md-button id="recipeImageGallery" class="md-raised md-accent" v-else-if="index == 4">+</md-button>
             </div>
         </div>
+
         <!-- Toggle bar for switching between recipe and reviews views -->
         <div id="recipeReviewsToggle">
-            <md-tabs md-fixed class="md-transparent recipeReviewsToggleBar">
+            <md-tabs class="md-transparent recipeReviewsToggleBar">
+                <!-- Recipe tab -->
                 <md-tab md-label="Recipe" class="recipeReviewsToggleBar">
+                    <!-- Details -->
+                    <div id="recipeDetails">
+                        <div class="detailsFlexItem">
+                            <span class="md-subheading"><b>Prep Time</b></span><br>
+                            <span class="md-body-1">{{prepTime}} Minutes</span>
+                        </div>
+                        <div class="detailsFlexItem">
+                            <span class="md-subheading"><b>Cook Time</b></span><br>
+                            <span class="md-body-1">{{cookTime}} Minutes</span>
+                        </div>
+                        <div class="detailsFlexItem">
+                            <span class="md-subheading"><b>Total Time</b></span><br>
+                            <span class="md-body-1">{{prepTime + cookTime}} Minutes</span>
+                        </div>
+                        <div class="detailsFlexItem">
+                            <span class="md-subheading"><b>Serves</b></span><br>
+                            <span class="md-body-1">{{servings}} People</span>
+                        </div>
+                    </div>
+                    <md-layout md-gutter>
+                        <md-layout md-column md-gutter md-flex="25">
+                            <!-- Ingredients -->
+                            <div id="recipeIngredients">
+                                <span class="md-title"><b>Ingredients</b></span><br>
+                                <ul><li v-for="ingredient in ingredients">{{ingredient}}</li></ul>
+                            </div>
+
+                            <!-- Cookware -->
+                            <div id="recipeCookware">
+                                <span class="md-title"><b>Cookware</b></span><br>
+                                Nothing here!
+                            </div>
+                        </md-layout>
+                        <md-layout md-column md-gutter>
+                            <!-- Steps -->
+                            <div id="recipeSteps">
+                                <span class="md-title"><b>Steps!</b></span><br>
+                                <div v-for="step, key, index in steps" class="recipeStepsStep">
+                                    <span class="md-subheading"><b>Step {{index + 1}}</b></span><br>
+                                    <span class="md-body-1">{{step}}</span>
+                                </div>
+                            </div>
+                        </md-layout>
+                    </md-layout>
                 </md-tab>
-                <md-tab md-label="Reviews" class="recipeReviewsToggleBar">
+
+                <!-- Reviews tab -->
+                <md-tab md-label="Reviews">
+                    <div class="userReview" v-for="review in reviews">
+                        <md-layout md-gutter>
+                            <md-layout md-flex="70">
+                                <span class="md-subheading userReviewName"><b>Reviewer: {{review.name}}</b></span><br>
+                            </md-layout>
+                            <md-layout md-flex="20">
+                                <md-rating-bar v-model="review.score" :md-max-rating="5" class="md-primary userReviewScore" disabled></md-rating-bar>
+                            </md-layout>
+                            <md-layout md-flex="10">
+                                <md-button class="md-dense userReviewButton">Report</md-button>
+                            </md-layout>
+                        </md-layout>
+
+                        <md-layout md-gutter>
+                            <span class="md-body-1 userReviewText">{{review.text}}</span>
+                        </md-layout>
+                    </div>
                 </md-tab>
             </md-tabs>
-        </div>
-        <!-- Details -->
-        <div id="recipeDetails">
-            <div class="detailsFlexItem">
-                <span class="md-subheading"><b>Prep Time</b></span><br>
-                <span class="md-body-1">{{prepTime}} Minutes</span>
-            </div>
-            <div class="detailsFlexItem">
-                <span class="md-subheading"><b>Cook Time</b></span><br>
-                <span class="md-body-1">{{cookTime}} Minutes</span>
-            </div>
-            <div class="detailsFlexItem">
-                <span class="md-subheading"><b>Total Time</b></span><br>
-                <span class="md-body-1">{{prepTime + cookTime}} Minutes</span>
-            </div>
-            <div class="detailsFlexItem">
-                <span class="md-subheading"><b>Serves</b></span><br>
-                <span class="md-body-1">{{servings}} People</span>
-            </div>
-        </div>
-        <!-- Ingredients -->
-        <div id="recipeIngredients">
-            <span class="md-title"><b>Ingredients</b></span><br>
-            <ul><li v-for="ingredient in ingredients">{{ingredient}}</li></ul>
-        </div>
-        <!-- Cookware -->
-        <div id="recipeCookware">
-            <span class="md-title"><b>Cookware</b></span><br>
-            Nothing here!
-        </div>
-        <!-- Steps -->
-        <div id="recipeSteps">
-            <span class="md-title"><b>Steps!</b></span><br>
-            <div v-for="step, key, index in steps" class="recipeStepsStep">
-                <span class="md-subheading"><b>Step {{index + 1}}</b></span><br>
-                <span class="md-body-1">{{step}}</span>
-            </div>
         </div>
     </div>
 </template>
@@ -145,7 +175,36 @@
           },
           "rating": 4.3,
           "reviews": [
-
+            {
+              "hasText": true,
+              "name": "John Doe",
+              "score": 4,
+              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+            },
+            {
+              "hasText": true,
+              "name": "John Doe",
+              "score": 4,
+              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+            },
+            {
+              "hasText": true,
+              "name": "John Doe",
+              "score": 4,
+              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+            },
+            {
+              "hasText": true,
+              "name": "John Doe",
+              "score": 4,
+              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+            },
+            {
+              "hasText": true,
+              "name": "John Doe",
+              "score": 4,
+              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+            }
           ],
           "madeIt": 45,
           "mock" : {
@@ -225,16 +284,17 @@
         grid-column: 1 / 6;
         margin-bottom: 0;
     }
-    .recipeReviewsToggleBar {
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
+
+
+
+
+
+
+
     #recipeDetails {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        grid-row: 3 / 4;
-        grid-column: 1 / 6;
         margin-top: 10px;
         margin-bottom: 10px;
 
@@ -248,7 +308,7 @@
         border-radius:0;
         text-align: center;
     }
-    /* Screen width more than 760 px */
+    /* Screen width more than 760 px
     @media screen and (min-width:760px) {
         #recipeIngredients {
             grid-row: 4 / 5;
@@ -263,8 +323,8 @@
             grid-column: 2 / 6;
             margin-left: 10px;
         }
-    }
-    /* Screen width less than 760 px */
+    }*/
+    /* Screen width less than 760 px
     @media screen and (max-width:760px) {
         #recipeIngredients {
             grid-row: 4 / 5;
@@ -279,5 +339,23 @@
     }
     .recipeStepsStep {
         margin-top: 10px;
+    }*/
+    #recipeCookware {
+        margin-top: 10px;
+    }
+
+    .userReview {
+        border-top: 2px solid #e0d5c5;
+        margin-top: 10px;
+    }
+    .userReviewName {
+    }
+    .userReviewScore {
+        margin-top: 0;
+    }
+    .userReviewButton {
+        margin-top: 0;
+    }
+    .userReviewText {
     }
 </style>
