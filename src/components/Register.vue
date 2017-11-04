@@ -1,14 +1,18 @@
 <template>
   <div class="register">
-    <div style="margin: 0 auto;
+    <div style="margin: 20px auto auto;
                 .flex-container {
                   display: flex;
                   width: 400px;
-                  height: 500px;
+                  height: 575px;
                   border: 4px solid tan;
+                  border-radius: 5px;
                   background-color: white;
+                  padding: 10px;
                 }">
       <form novalidate @submit.stop.prevent="register">
+        <h4 align="center">Register</h4>
+
         <md-input-container>
           <label>First Name</label>
           <md-input v-model="firstName" required></md-input>
