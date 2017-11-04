@@ -16,15 +16,20 @@
         <!-- Summary -->
         <div id="recipeSummary">
             <div id="recipeSummaryTitle">
+                <!-- Title and ratings -->
                 <span class="md-display-1">{{name}}</span>
                 <md-rating-bar style="margin:auto" v-model="rating" :md-max-rating="5" class="md-primary" disabled></md-rating-bar>
+
                 <!-- Reviews | made it | photos -->
                 <md-button class="md-primary">{{reviews.length}} Reviews</md-button>
                 <md-button class="md-primary">{{madeIt}} Made It</md-button>
                 <md-button class="md-primary">{{photos.length}} Photos</md-button>
             </div>
+            <!-- Recipe author and description -->
             <span class="md-body-2">Recipe by <u>{{submitter}}</u></span><br>
             <span class="md-subheading">{{description}}</span><br>
+
+            <!-- Save | Made It | Review | Report -->
             <div id="summaryFlexButtons">
                 <md-button class="summaryButtons md-raised md-accent">Save</md-button>
                 <md-button class="summaryButtons md-raised md-accent">Made It</md-button>
@@ -65,9 +70,7 @@
         <!-- Ingredients -->
         <div id="recipeIngredients">
             <span class="md-title"><b>Ingredients</b></span><br>
-            <ul>
-                <li v-for="ingredient in ingredients">{{ingredient}}</li>
-            </ul>
+            <ul><li v-for="ingredient in ingredients">{{ingredient}}</li></ul>
         </div>
         <!-- Cookware -->
         <div id="recipeCookware">
@@ -77,8 +80,8 @@
         <!-- Steps -->
         <div id="recipeSteps">
             <span class="md-title"><b>Steps!</b></span><br>
-            <div v-for="step, key in steps" class="recipeStepsStep">
-                <span class="md-subheading"><b>Step {{key}}</b></span><br>
+            <div v-for="step, key, index in steps" class="recipeStepsStep">
+                <span class="md-subheading"><b>Step {{index + 1}}</b></span><br>
                 <span class="md-body-1">{{step}}</span>
             </div>
         </div>
@@ -148,20 +151,15 @@
     #recipePage {
         display: grid;
         grid-template-rows: repeat(3, minmax(50px ,auto));
-        grid-template-columns: repeat(5, minmax(50px, auto));
-        grid-gap: 5px;
-        /*background-color: #ffffff;*/
-        padding-right: 20px;
-        padding-left: 20px;
-        padding-top: 30px;
+        grid-template-columns: repeat(5, minmax(50px, 20%));
+        grid-gap: 15px;
+        margin-top: 3%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
     #recipeSummary {
         grid-row: 1 / 2;
         grid-column: 1 / 4;
-
-        /*outline-color: blueviolet;
-        outline-width: 2px;
-        outline-style: solid;*/
     }
     #recipeSummaryTitle {
         text-align: center;
@@ -170,9 +168,6 @@
         grid-row: 1 / 2;
         grid-column: 4 / 6;
         margin-left: 10px;
-        /*outline-color: #32e24b;
-        outline-width: 2px;
-        outline-style: solid;*/
     }
     .recipePrimaryImage {
         width:320px;
@@ -214,28 +209,33 @@
         border-radius:0;
         text-align: center;
     }
-    #recipeIngredients {
-        grid-row: 3 / 4;
-        grid-column: 1 / 2;
-
-        /*outline-color: #3db8e2;
-        outline-width: 2px;
-        outline-style: solid;*/
+    /* Screen width more than 760 px */
+    @media screen and (min-width:760px) {
+        #recipeIngredients {
+            grid-row: 3 / 4;
+            grid-column: 1 / 2;
+        }
+        #recipeCookware {
+            grid-column: 1 / 2;
+        }
+        #recipeSteps {
+            grid-row: 3 / 5;
+            grid-column: 2 / 6;
+            margin-left: 10px;
+        }
     }
-    #recipeCookware {
-
-        /*outline-color: #d3e23b;
-        outline-width: 2px;
-        outline-style: solid;*/
-    }
-    #recipeSteps {
-        grid-row: 3 / 5;
-        grid-column: 2 / 6;
-        margin-left: 10px;
-
-        /*outline-color: #32e233;
-        outline-width: 2px;
-        outline-style: solid;*/
+    /* Screen width less than 760 px */
+    @media screen and (max-width:760px) {
+        #recipeIngredients {
+            grid-row: 3 / 4;
+            grid-column: 1 / 6;
+        }
+        #recipeCookware {
+            grid-column: 1 / 6;
+        }
+        #recipeSteps {
+            grid-column: 1 / 6;
+        }
     }
     .recipeStepsStep {
         margin-top: 10px;
