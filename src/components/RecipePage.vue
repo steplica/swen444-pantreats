@@ -31,9 +31,18 @@
 
             <!-- Save | Made It | Review | Report -->
             <div id="summaryFlexButtons">
-                <md-button class="summaryButtons md-raised md-accent">Save</md-button>
-                <md-button class="summaryButtons md-raised md-accent">Made It</md-button>
+                <!-- Save buttons -->
+                <md-button v-if="!mock.savedIt" class="summaryButtons md-raised md-accent" v-on:click="toggleSavedIt">Save</md-button>
+                <md-button v-else class="summaryButtons md-warn" v-on:click="toggleSavedIt">Saved</md-button>
+
+                <!-- Made it buttons -->
+                <md-button v-if="!mock.madeIt" class="summaryButtons md-raised md-accent" v-on:click="toggleMadeIt">I Made It</md-button>
+                <md-button v-else class="summaryButtons md-warn" v-on:click="toggleMadeIt">Made It</md-button>
+
+                <!-- Review buttons -->
                 <md-button class="summaryButtons md-raised md-accent">Review</md-button>
+
+                <!-- Report buttons -->
                 <md-button class="summaryButtons md-raised md-accent">Report</md-button>
             </div>
         </div>
@@ -47,6 +56,15 @@
                 <md-image v-for="photo, key, index in photos" v-if="index < 3" class="recipeSecondaryImage" :md-src="photo" alt="Recipe"></md-image>
                 <md-button id="recipeImageGallery" class="md-raised md-accent" v-else-if="index == 4">+</md-button>
             </div>
+        </div>
+        <!-- Toggle bar for switching between recipe and reviews views -->
+        <div id="recipeReviewsToggle">
+            <md-tabs md-fixed class="md-transparent recipeReviewsToggleBar">
+                <md-tab md-label="Recipe" class="recipeReviewsToggleBar">
+                </md-tab>
+                <md-tab md-label="Reviews" class="recipeReviewsToggleBar">
+                </md-tab>
+            </md-tabs>
         </div>
         <!-- Details -->
         <div id="recipeDetails">
@@ -129,8 +147,20 @@
           "reviews": [
 
           ],
-          "madeIt": 45
+          "madeIt": 45,
+          "mock" : {
+            madeIt: false,
+            savedIt: false
+          }
         };
+      },
+      methods: {
+        toggleMadeIt() {
+          this.mock.madeIt = !this.mock.madeIt;
+        },
+        toggleSavedIt() {
+          this.mock.savedIt = !this.mock.savedIt;
+        }
       }
     }
 </script>
@@ -190,11 +220,20 @@
         font-size: 24px;
         max-width: 72px
     }
+    #recipeReviewsToggle {
+        grid-row: 2 / 3;
+        grid-column: 1 / 6;
+        margin-bottom: 0;
+    }
+    .recipeReviewsToggleBar {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
     #recipeDetails {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        grid-row: 2 / 3;
+        grid-row: 3 / 4;
         grid-column: 1 / 6;
         margin-top: 10px;
         margin-bottom: 10px;
@@ -212,14 +251,15 @@
     /* Screen width more than 760 px */
     @media screen and (min-width:760px) {
         #recipeIngredients {
-            grid-row: 3 / 4;
+            grid-row: 4 / 5;
             grid-column: 1 / 2;
         }
         #recipeCookware {
+            grid-row: 5 / 6;
             grid-column: 1 / 2;
         }
         #recipeSteps {
-            grid-row: 3 / 5;
+            grid-row: 4 / 6;
             grid-column: 2 / 6;
             margin-left: 10px;
         }
@@ -227,7 +267,7 @@
     /* Screen width less than 760 px */
     @media screen and (max-width:760px) {
         #recipeIngredients {
-            grid-row: 3 / 4;
+            grid-row: 4 / 5;
             grid-column: 1 / 6;
         }
         #recipeCookware {
