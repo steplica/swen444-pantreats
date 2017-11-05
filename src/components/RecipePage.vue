@@ -32,6 +32,7 @@
 
             <!-- Save | Made It | Review | Report -->
             <div id="summaryFlexButtons">
+
                 <!-- Save buttons -->
                 <md-button v-if="!mock.savedIt" class="summaryButtons md-raised md-accent md-dense" v-on:click="toggleSavedIt">Save</md-button>
                 <md-button v-else class="summaryButtons" v-on:click="toggleSavedIt">Saved</md-button>
@@ -41,7 +42,7 @@
                 <md-button v-else class="summaryButtons" v-on:click="toggleMadeIt">Made It</md-button>
 
                 <!-- Review buttons -->
-                <md-button class="summaryButtons md-raised md-accent md-dense">Review</md-button>
+                <md-button id="reviewButton" class="summaryButtons md-raised md-accent md-dense">Review</md-button>
 
                 <!-- Report buttons -->
                 <md-button class="summaryButtons md-raised md-accent md-dense">Report</md-button>
@@ -143,7 +144,8 @@
     export default {
       components: {
         MdButton,
-        MdInputContainer},
+        MdInputContainer
+      },
       name: 'recipePage',
       data() {
         return {
@@ -156,12 +158,12 @@
             "1": "Flour"
           },
           "steps": {
-            "0": "Somebody once told me the world is gonna roll me",
-            "1": "I ain't the sharpest tool in the shed",
-            "2": "She was looking kind of dumb with her finger and her thumb",
-            "3": "In the shape of an \"L\" on her forehead",
-            "4": "Well the years start coming and they don't stop coming",
-            "5": "Fed to the rules and I hit the ground running",
+            "0": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "1": "Duis sagittis mauris eu placerat posuere.",
+            "2": "Mauris nec lorem in justo iaculis laoreet.",
+            "3": "Praesent sollicitudin libero ac ex mollis finibus.",
+            "4": "Ut commodo elit id aliquet egestas.",
+            "5": "Quisque varius nunc vitae nisi faucibus, vitae blandit mi iaculis.",
           },
           "prepTime": 20,
           "cookTime": 60,
@@ -178,38 +180,21 @@
             {
               "hasText": true,
               "name": "John Doe",
-              "score": 4,
-              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+              "score": 5,
+              "text": "Chicken is awesome."
             },
             {
               "hasText": true,
-              "name": "John Doe",
-              "score": 4,
-              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
-            },
-            {
-              "hasText": true,
-              "name": "John Doe",
-              "score": 4,
-              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
-            },
-            {
-              "hasText": true,
-              "name": "John Doe",
-              "score": 4,
-              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
-            },
-            {
-              "hasText": true,
-              "name": "John Doe",
-              "score": 4,
-              "text": "IS SOMEONE GETTING THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST THE BEST"
+              "name": "Jane Doe",
+              "score": 3,
+              "text": "I don't really like chicken."
             }
           ],
           "madeIt": 45,
           "mock" : {
-            madeIt: false,
-            savedIt: false
+            "madeIt": false,
+            "savedIt": false,
+            "page": 1
           }
         };
       },
@@ -284,13 +269,6 @@
         grid-column: 1 / 6;
         margin-bottom: 0;
     }
-
-
-
-
-
-
-
     #recipeDetails {
         display: flex;
         flex-direction: row;
@@ -308,54 +286,17 @@
         border-radius:0;
         text-align: center;
     }
-    /* Screen width more than 760 px
-    @media screen and (min-width:760px) {
-        #recipeIngredients {
-            grid-row: 4 / 5;
-            grid-column: 1 / 2;
-        }
-        #recipeCookware {
-            grid-row: 5 / 6;
-            grid-column: 1 / 2;
-        }
-        #recipeSteps {
-            grid-row: 4 / 6;
-            grid-column: 2 / 6;
-            margin-left: 10px;
-        }
-    }*/
-    /* Screen width less than 760 px
-    @media screen and (max-width:760px) {
-        #recipeIngredients {
-            grid-row: 4 / 5;
-            grid-column: 1 / 6;
-        }
-        #recipeCookware {
-            grid-column: 1 / 6;
-        }
-        #recipeSteps {
-            grid-column: 1 / 6;
-        }
-    }
-    .recipeStepsStep {
-        margin-top: 10px;
-    }*/
     #recipeCookware {
         margin-top: 10px;
     }
-
     .userReview {
         border-top: 2px solid #e0d5c5;
         margin-top: 10px;
-    }
-    .userReviewName {
     }
     .userReviewScore {
         margin-top: 0;
     }
     .userReviewButton {
         margin-top: 0;
-    }
-    .userReviewText {
     }
 </style>
