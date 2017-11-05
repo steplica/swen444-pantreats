@@ -52,32 +52,6 @@
         </md-input-container>
 
         <md-button type="submit" class="md-raised md-primary">Register</md-button>
-          <!-- placeholder button to bring up report dialogue -->
-          <template>
-            <v-layout row justify-center>
-              <v-dialog v-model="reportDialog" width="600px" padding="10px" persistent >
-                <v-btn color="primary" dark slot="activator">Open Report Dialog</v-btn>
-                <v-card>
-                  <v-card-title class="headline" font-weight: bold>Report Inappropriate Content</v-card-title>
-                  <v-divider></v-divider>
-                  <v-card-text>
-                    <v-radio-group v-model="ex8">
-                      <v-radio label="Spam or Misleading" value="spam-radio"></v-radio>
-                      <v-radio label="Violent or Explicit Content" value="explicit-radio"></v-radio>
-                      <v-radio label="Other (Describe below)" value="other-radio"></v-radio>
-                    </v-radio-group>
-                    <v-text-field name="reportDescription" label="Describe the problem" multi-line></v-text-field>
-                  </v-card-text>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" dark @click.native="reportDialog = false">Cancel</v-btn>
-                    <v-btn color="primary" dark @click.native="reportDialog = false">Submit</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-layout>
-          </template>
       </form>
     </div>
   </div>
@@ -98,10 +72,6 @@
         email: undefined,
         college: undefined,
         password: undefined,
-
-
-          //report dialogue
-          reportDialog:false
       };
     },
     methods: {
