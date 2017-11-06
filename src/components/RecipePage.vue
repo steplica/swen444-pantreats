@@ -17,20 +17,18 @@
         <div id="recipeSummary">
             <div id="recipeSummaryTitle">
                 <!-- Title and ratings -->
-                <span class="md-display-1">{{name}}</span>
-                {{ $route.params.id }}
-                {{ recipe.name }}
-                <md-rating-bar style="margin:auto" v-model="rating" :md-max-rating="5" class="md-primary" disabled></md-rating-bar>
+                <span class="md-display-1">{{recipe.name}}</span>
+                <md-rating-bar style="margin:auto" v-model="revewScore" :md-max-rating="5" class="md-primary" disabled></md-rating-bar>
 
                 <!-- Reviews | made it | photos -->
-                <md-button class="md-primary">{{reviews.length}} Reviews</md-button>
-                <md-button class="md-primary">{{madeIt}} Made It</md-button>
-                <md-button class="md-primary">{{photos.length}} Photos</md-button>
+                <md-button class="md-primary">{{recipe.reviews.length}} Reviews</md-button>
+                <md-button class="md-primary">{{recipe.madeIt}} Made It</md-button>
+                <md-button class="md-primary">{{recipe.photos.length}} Photos</md-button>
             </div>
 
             <!-- Recipe author and description -->
-            <span class="md-body-2">Recipe by <u>{{submitter}}</u></span><br>
-            <span class="md-subheading">{{description}}</span><br>
+            <span class="md-body-2">Recipe by <u>{{recipe.submitter}}</u></span><br>
+            <span class="md-subheading">{{recipe.description}}</span><br>
 
             <!-- Save | Made It | Review | Report -->
             <div id="summaryFlexButtons">
@@ -54,12 +52,12 @@
         <!-- Images -->
         <div id="recipeImages">
             <!-- Primary image -->
-            <md-image class="recipePrimaryImage" :md-src="photos[0]" alt="Recipe Image"></md-image>
+            <md-image class="recipePrimaryImage" :md-src="recipe.photos[0]" alt="Recipe Image"></md-image>
 
             <!-- Show smaller previews for non-primary images -->
             <div id="recipeSecondaryImages">
-                <md-image v-for="photo, key, index in photos" v-if="index < 3" class="recipeSecondaryImage" :md-src="photo" alt="Recipe"></md-image>
-                <md-button id="recipeImageGallery" class="md-raised md-accent" v-else-if="index == 4">+</md-button>
+                <md-image v-for="photo, key, index in recipe.photos" v-if="key + 1 < 3" class="recipeSecondaryImage" :md-src="photo" alt="Recipe"></md-image>
+                <md-button id="recipeImageGallery" class="md-raised md-accent" v-else-if="key + 1 == 4">+</md-button>
             </div>
         </div>
 
@@ -72,19 +70,19 @@
                     <div id="recipeDetails">
                         <div class="detailsFlexItem">
                             <span class="md-subheading"><b>Prep Time</b></span><br>
-                            <span class="md-body-1">{{prepTime}} Minutes</span>
+                            <span class="md-body-1">{{recipe.prepTime}} Minutes</span>
                         </div>
                         <div class="detailsFlexItem">
                             <span class="md-subheading"><b>Cook Time</b></span><br>
-                            <span class="md-body-1">{{cookTime}} Minutes</span>
+                            <span class="md-body-1">{{recipe.cookTime}} Minutes</span>
                         </div>
                         <div class="detailsFlexItem">
                             <span class="md-subheading"><b>Total Time</b></span><br>
-                            <span class="md-body-1">{{prepTime + cookTime}} Minutes</span>
+                            <span class="md-body-1">{{recipe.prepTime + recipe.cookTime}} Minutes</span>
                         </div>
                         <div class="detailsFlexItem">
                             <span class="md-subheading"><b>Serves</b></span><br>
-                            <span class="md-body-1">{{servings}} People</span>
+                            <span class="md-body-1">{{recipe.servings}} People</span>
                         </div>
                     </div>
                     <md-layout md-gutter>
@@ -92,7 +90,7 @@
                             <!-- Ingredients -->
                             <div id="recipeIngredients">
                                 <span class="md-title"><b>Ingredients</b></span><br>
-                                <ul><li v-for="ingredient in ingredients">{{ingredient}}</li></ul>
+                                <ul><li v-for="ingredient in recipe.ingredients">{{ingredient}}</li></ul>
                             </div>
 
                             <!-- Cookware -->
@@ -105,8 +103,8 @@
                             <!-- Steps -->
                             <div id="recipeSteps">
                                 <span class="md-title"><b>Steps!</b></span><br>
-                                <div v-for="step, key, index in steps" class="recipeStepsStep">
-                                    <span class="md-subheading"><b>Step {{index + 1}}</b></span><br>
+                                <div v-for="step, key, index in recipe.steps" class="recipeStepsStep">
+                                    <span class="md-subheading"><b>Step {{key + 1}}</b></span><br>
                                     <span class="md-body-1">{{step}}</span>
                                 </div>
                             </div>
@@ -116,7 +114,7 @@
 
                 <!-- Reviews tab -->
                 <md-tab md-label="Reviews">
-                    <div class="userReview" v-for="review in reviews">
+                    <div class="userReview" v-for="review in recipe.reviews">
                         <md-layout md-gutter>
                             <md-layout md-flex="70">
                                 <span class="md-subheading userReviewName"><b>Reviewer: {{review.name}}</b></span><br>
@@ -157,47 +155,6 @@
         return {
           //Temporary recipe data
           "recipeName": this.$route.params.id,
-          "submitter": "TxNVpLUsgAZc5yuoGul",
-          "name": "Chicken Pot Pie",
-          "description": "A delicious chicken pot pie!",
-          "ingredients": {
-            "0": "Chicken",
-            "1": "Flour"
-          },
-          "steps": {
-            "0": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "1": "Duis sagittis mauris eu placerat posuere.",
-            "2": "Mauris nec lorem in justo iaculis laoreet.",
-            "3": "Praesent sollicitudin libero ac ex mollis finibus.",
-            "4": "Ut commodo elit id aliquet egestas.",
-            "5": "Quisque varius nunc vitae nisi faucibus, vitae blandit mi iaculis.",
-          },
-          "prepTime": 20,
-          "cookTime": 60,
-          "servings": 5,
-          "photos": {
-            "0": "https://i.imgur.com/YWbMCs0.png",
-            "1": "https://i.imgur.com/YWbMCs0.png",
-            "2": "https://i.imgur.com/YWbMCs0.png",
-            "3": "https://i.imgur.com/YWbMCs0.png",
-            "4": "https://i.imgur.com/YWbMCs0.png"
-          },
-          "rating": 4.3,
-          "reviews": [
-            {
-              "hasText": true,
-              "name": "John Doe",
-              "score": 5,
-              "text": "Chicken is awesome."
-            },
-            {
-              "hasText": true,
-              "name": "Jane Doe",
-              "score": 3,
-              "text": "I don't really like chicken."
-            }
-          ],
-          "madeIt": 45,
           "mock" : {
             "madeIt": false,
             "savedIt": false,
@@ -219,6 +176,20 @@
         },
         toggleSavedIt() {
           this.mock.savedIt = !this.mock.savedIt;
+        }
+      },
+      computed: {
+        revewScore() {
+          let total = 0;
+          let count = 0;
+          this.recipe.reviews.forEach(function(review){
+            total += review.score;
+            count++;
+          });
+          if(count == 0)
+            return 0;
+          else
+            return (total / count);
         }
       }
     }
@@ -291,7 +262,7 @@
         margin-top: 10px;
         margin-bottom: 10px;
 
-        outline-color: #ccdae2;
+        outline-color: #e0d5c5;
         outline-width: 2px;
         outline-style: solid;
     }
@@ -313,5 +284,8 @@
     }
     .userReviewButton {
         margin-top: 0;
+    }
+    .recipeStepsStep {
+        margin-top: 10px;
     }
 </style>
