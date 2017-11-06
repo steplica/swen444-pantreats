@@ -13,8 +13,8 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" flat @click.native="reviewDialog = false">Cancel</v-btn>
-                    <v-btn color="primary" dark @click.native="reviewDialog = false">Submit</v-btn>
+                    <v-btn color="primary" flat @click.native="close()">Cancel</v-btn>
+                    <v-btn color="primary" dark @click.native="close()">Submit</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -37,6 +37,13 @@
                 reviewInfo: undefined
             };
         },
+        methods: {
+            close() {
+              this.reviewRating = undefined;
+              this.reviewInfo = undefined;
+              this.reviewDialog = false;
+            }
+        }
     }
 </script>
 
