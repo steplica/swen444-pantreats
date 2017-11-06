@@ -24,7 +24,7 @@ export default new Router({
       component: RecipeSubmit
     },
     { //Temporary path for testing recipe page
-      path: '/recipes/test',
+      path: '/recipes/:id',
       component: RecipePage
     }
   ]

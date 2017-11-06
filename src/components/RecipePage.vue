@@ -18,6 +18,8 @@
             <div id="recipeSummaryTitle">
                 <!-- Title and ratings -->
                 <span class="md-display-1">{{name}}</span>
+                {{ $route.params.id }}
+                {{ recipe.name }}
                 <md-rating-bar style="margin:auto" v-model="rating" :md-max-rating="5" class="md-primary" disabled></md-rating-bar>
 
                 <!-- Reviews | made it | photos -->
@@ -141,6 +143,10 @@
 <script>
   import MdInputContainer from "../../node_modules/vue-material/src/components/mdInputContainer/mdInputContainer";
   import MdButton from "../../node_modules/vue-material/src/components/mdButton/mdButton.vue";
+  import db from "../database";
+  const recipeRef = db.ref("recipes");
+
+
     export default {
       components: {
         MdButton,
@@ -150,6 +156,7 @@
       data() {
         return {
           //Temporary recipe data
+          "recipeName": this.$route.params.id,
           "submitter": "TxNVpLUsgAZc5yuoGul",
           "name": "Chicken Pot Pie",
           "description": "A delicious chicken pot pie!",
@@ -197,6 +204,14 @@
             "page": 1
           }
         };
+      },
+      firebase() {
+        return {
+          recipe: {
+            source: recipeRef.child(this.recipeName),
+            asObject: true
+          }
+        }
       },
       methods: {
         toggleMadeIt() {
