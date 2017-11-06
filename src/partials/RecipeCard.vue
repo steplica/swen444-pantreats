@@ -1,12 +1,15 @@
 <template>
-    <v-card hover :to="'/recipe/' + String(this.id)" class="black--text">
+    <v-card hover :to="'/recipes/' + String(this.id)" class="black--text">
         <v-card-title class="title accent-secondary">
             {{name}}
         </v-card-title>
         <v-card-media class="recipe-image" :src="src" height="150px"></v-card-media>
-        <v-card-actions><md-rating-bar class="rating-bar" disabled></md-rating-bar></v-card-actions>
+        <v-card-actions>
+            <md-rating-bar class="rating-bar" v-model="rating" disabled></md-rating-bar>
+        </v-card-actions>
         <v-card-text class="card-text">
             {{description}}
+            <!-- TODO: Cards with short descriptions look ugly. Consider shrinking? Mosaic layout? -->
         </v-card-text>
     </v-card>
 </template>

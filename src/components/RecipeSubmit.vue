@@ -224,7 +224,7 @@
           cookTime: (parseInt(this.cookTimeHr) * 60) + parseInt(this.cookTimeMin),
           servings: this.servings,
           cookware: this.cookware.filter(x => x.trim() !== ''),
-          photos: this.photos,
+          photos: this.photos, // TODO: Put 'No image' placeholder to prevent out of bounds reads later
           tags: this.tags.filter(x => x.trim() !== ''),
           steps: this.recipeSteps.map(x => x.text).filter(x => x.trim() !== ''),
         });

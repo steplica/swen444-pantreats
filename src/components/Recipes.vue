@@ -1,20 +1,13 @@
 <template>
     <div id="recipe-search-page">
-        <!--<v-toolbar dense :fixed="isToolbarFixed" color="accent-tertiary">-->
-            <!--<v-text-field prepend-icon="search" hide-details single-line></v-text-field>-->
-            <!--<v-btn icon>-->
-                <!--<v-icon>more_vert</v-icon>-->
-            <!--</v-btn>-->
-        <!--</v-toolbar>-->
-
         <v-container fluid grid-list-lg>
             <v-layout row wrap>
-                <v-flex xs3 v-for="i in 1" :key="i">
-                    <recipe-card name="Delicious Test Recipe"
-                                 src="https://i.imgur.com/A2SzoRp.jpg"
-                                 description="This is a fantastic recipe with an even more fantastic description. In fact, some would say it's the best description in the world. You can click on this card to find out how to make it!"
-                                 :rating="5"
-                                 :id="recipes[i-1]">
+                <v-flex xs3 v-for="recipe in recipes" :key="recipe.id">
+                    <recipe-card :name="recipe.name"
+                                 :src="recipe.photos[0]"
+                                 :description="recipe.description"
+                                 :rating="recipe.rating"
+                                 :id="recipe.id">
                     </recipe-card>
                 </v-flex>
             </v-layout>
@@ -37,35 +30,27 @@
       },
       data() {
         return {
-          isToolbarFixed: false,
-
-          recipes: []
+          recipes: [] // TODO: Use VueFire
         };
       },
-      mounted: function() {
+      created: function() {
         this.updateSearchResults();
+        console.log(this.recipes);
       },
       methods: {
         updateSearchResults() {
           // TODO: Replace with actual updates based on pantry ingredients
-          // For now, we just load the recipes in the database
+          // For now, we just load the recipes that are in the database
           let recipes = this.recipes;
 
-          recipesRef.on('child_added', (recipe) => {
+          recipesRef.orderByChild('rating').on('child_added', (snapshot) => {
+            let recipe = snapshot.val();
+            recipe['id'] = snapshot.key; // TODO: Would it make sense to just store this in the database?
             recipes.push(recipe);
           });
 
-          this.recipes = recipes;
+          this.recipes = recipes.reverse();
         }
-//        handleScroll() {
-//            this.isToolbarFixed = $(window).scrollTop() >= 100;
-//        }
       },
-//      created() {
-//        window.addEventListener('scroll', this.handleScroll);
-//      },
-//      destroyed() {
-//        window.removeEventListener('scroll', this.handleScroll);
-//      }
     }
 </script>
