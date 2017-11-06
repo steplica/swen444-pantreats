@@ -16,8 +16,8 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" flat @click.native="reportDialog = false">Cancel</v-btn>
-                    <v-btn color="primary" dark @click.native="reportDialog = false">Submit</v-btn>
+                    <v-btn color="primary" flat @click.native="close(false)">Cancel</v-btn>
+                    <v-btn color="primary" dark @click.native="close(true)">Submit</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -37,9 +37,23 @@
             return {
                 reportDialog: false,
                 reportRadio: undefined,
-                reportInfo: undefined
+                reportInfo: undefined,
+                vueRouter: this.$router
             };
         },
+      methods: {
+        close(redirect) {
+          //Clean out dialog data
+          this.reportRadio = undefined;
+          this.reportInfo = undefined;
+          this.reportDialog = false;
+
+          if(redirect) {
+            //this.vueRouter.go(-1);
+            this.vueRouter.push('../recipes');
+          }
+        }
+      }
     }
 </script>
 
