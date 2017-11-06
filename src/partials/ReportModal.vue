@@ -1,7 +1,7 @@
 <template>
     <v-layout row justify-center>
+        <md-button class="activatorButton md-raised md-accent md-dense" slot="activator" @click.native.stop="reportDialog=true">Report</md-button>
         <v-dialog v-model="reportDialog" width="600px" padding="10px" persistent >
-            <v-btn color="primary" dark slot="activator">Open Report Dialog</v-btn>
             <v-card>
                 <v-card-title class="headline" font-weight: bold>Report Inappropriate Content</v-card-title>
                 <v-divider></v-divider>
@@ -28,9 +28,11 @@
     import Firebase from 'firebase';
     import db from '../database';
     import router from 'vue-router';
+    import MdButton from "../../node_modules/vue-material/src/components/mdButton/mdButton.vue";
 
     export default {
-        name: 'ReportModal',
+      components: {MdButton},
+      name: 'ReportModal',
         data () {
             return {
                 reportDialog: false,
@@ -40,3 +42,12 @@
         },
     }
 </script>
+
+<style>
+    .activatorButton {
+        margin: 0 0 0 0;
+        border-radius:0px;
+        flex: 1;
+        width: auto;
+    }
+</style>
