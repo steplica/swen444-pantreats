@@ -18,7 +18,7 @@
             <div id="recipeSummaryTitle">
                 <!-- Title and ratings -->
                 <span class="md-display-1">{{recipe.name}}</span>
-                <md-rating-bar style="margin:auto" v-model="revewScore" :md-max-rating="5" class="md-primary" disabled></md-rating-bar>
+                <md-rating-bar style="margin:auto" v-model="reviewScore" :md-max-rating="5" class="md-primary" disabled></md-rating-bar>
 
                 <!-- Reviews | made it | photos -->
                 <md-button class="md-primary">{{recipe.reviews.length}} Reviews</md-button>
@@ -56,7 +56,7 @@
 
             <!-- Show smaller previews for non-primary images -->
             <div id="recipeSecondaryImages">
-                <md-image v-for="photo, key, index in recipe.photos" v-if="key + 1 < 3" class="recipeSecondaryImage" :md-src="photo" alt="Recipe"></md-image>
+                <md-image v-for="photo, key, index in recipe.photos" :key="key" v-if="key + 1 < 3" class="recipeSecondaryImage" :md-src="photo" alt="Recipe"></md-image>
                 <md-button id="recipeImageGallery" class="md-raised md-accent" v-else-if="key + 1 == 4">+</md-button>
             </div>
         </div>
@@ -179,7 +179,7 @@
         }
       },
       computed: {
-        revewScore() {
+        reviewScore() {
           let total = 0;
           let count = 0;
           this.recipe.reviews.forEach(function(review){

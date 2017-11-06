@@ -16,7 +16,7 @@
                   single-line hide-details multiple max-height="auto" autocomplete
                   v-bind:items="ingredients" v-model="ingredientsToAdd"
                   item-text="name" item-value="name">
-          <template slot="item" scope="data">
+          <template slot="item" slot-scope="data">
             <template v-if="typeof data.item !== 'object'">
               <v-list-tile-content v-text="data.item"></v-list-tile-content>
             </template>

@@ -1,5 +1,4 @@
 <template>
-    <v-app class="secondary">
     <div id="recipe-submit-page">
         <div>
             <form validate @submit.stop.prevent="submitRecipe">
@@ -17,7 +16,7 @@
                         <!-- TODO: Make this required -->
                         <v-select v-model="ingredients" label="Ingredients" chips tags :hide-selected="true"
                                   :no-data-text="'No suggestions'"
-                            hint="Enter an ingredient (e.g. &quot;2 eggs&quot;) and press Tab to record it." persistent-hint>
+                            hint="Enter an ingredient (e.g. &quot;Eggs&quot;) and press Tab to record it." persistent-hint>
                         </v-select>
 
                         <br><br>
@@ -125,7 +124,6 @@
             </form>
         </div>
     </div>
-    </v-app>
 </template>
 
 <script>

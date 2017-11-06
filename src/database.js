@@ -1,12 +1,12 @@
 import Firebase from 'firebase'
 
 let config = {
-  apiKey: "AIzaSyDfxRhV6rSmLkL4VQrLaBFrZfDLhC5rX9E",
-  authDomain: "pantreats.firebaseapp.com",
-  databaseURL: "https://pantreats.firebaseio.com",
-  projectId: "pantreats",
-  storageBucket: "pantreats.appspot.com",
-  messagingSenderId: "599821562839"
+  apiKey: "AIzaSyCFr2V5mjFFDLFcuK3ODv-ek64zeC77qAg",
+  authDomain: "pantreats-test.firebaseapp.com",
+  databaseURL: "https://pantreats-test.firebaseio.com",
+  projectId: "pantreats-test",
+  storageBucket: "pantreats-test.appspot.com",
+  messagingSenderId: "262635869705"
 }
 
 const app = Firebase.initializeApp(config)

@@ -26,4 +26,7 @@
   html {
     overflow-y: auto;
   }
+  a {
+    text-decoration: none !important; /* Vue Material doesn't play nice with Vuetify */
+  }
 </style>
