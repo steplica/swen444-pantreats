@@ -206,7 +206,7 @@
     // TODO: The unauthenticated view is briefly visible on refresh; how can we avoid this?
     mounted: function() {
       Firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
+        if (user && !user.isAnonymous) {
           this.isUserLoggedIn = true;
         }
       })
@@ -223,6 +223,10 @@
           selections.forEach((ingredient) => {
             this.ingredientsToAdd = [];
             if (!(pantry.includes(ingredient))) {
+              // If the user isn't accounted for, sign them up anonymously
+              if (!Firebase.auth().currentUser) {
+                this.registerAnonymousUser();
+              }
               pantry.push(ingredient);
             } else {
               let index = pantry.indexOf(ingredient);
@@ -266,6 +270,9 @@
         this.email = undefined;
         this.password = undefined;
       },
+      registerAnonymousUser() {
+        Firebase.auth().signInAnonymously();
+      },
       login(event) {
         Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
           // Login was successful
@@ -305,6 +312,7 @@
         });
       },
       googleSignin(event) {
+        // TODO: Should anonymous users be able to convert through sign-in or do we want a dedicated "register with Google creds?"
         const provider = new Firebase.auth.GoogleAuthProvider();
         Firebase.auth().signInWithPopup(provider).then((result) => {
           this.hideAndClearMenu();
