@@ -42,10 +42,13 @@
                 <md-button v-else class="summaryButtons" v-on:click="toggleMadeIt">Made It</md-button>
 
                 <!-- Review buttons -->
-                <md-button id="reviewButton" class="summaryButtons md-raised md-accent md-dense">Review</md-button>
+                <!--<md-button id="reviewButton" class="summaryButtons md-raised md-accent md-dense">Review</md-button>-->
+                <review-modal class="summaryButtons"></review-modal>
 
                 <!-- Report buttons -->
-                <md-button class="summaryButtons md-raised md-accent md-dense">Report</md-button>
+                <!--<md-button class="summaryButtons md-raised md-accent md-dense">Report</md-button>-->
+                <report-modal class="summaryButtons"></report-modal>
+
             </div>
         </div>
 
@@ -141,6 +144,8 @@
 <script>
   import MdInputContainer from "../../node_modules/vue-material/src/components/mdInputContainer/mdInputContainer";
   import MdButton from "../../node_modules/vue-material/src/components/mdButton/mdButton.vue";
+  import ReportModal from "../partials/ReportModal.vue";
+  import ReviewModal from "../partials/ReviewModal.vue";
   import db from "../database";
   const recipeRef = db.ref("recipes");
 
@@ -148,7 +153,9 @@
     export default {
       components: {
         MdButton,
-        MdInputContainer
+        MdInputContainer,
+        reportModal: ReportModal,
+        reviewModal: ReviewModal
       },
       name: 'recipePage',
       data() {

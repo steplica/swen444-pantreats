@@ -7,9 +7,9 @@ let config = {
   projectId: "pantreats-test",
   storageBucket: "pantreats-test.appspot.com",
   messagingSenderId: "262635869705"
-}
+};
 
-const app = Firebase.initializeApp(config)
-const db = app.database()
+const app = Firebase.initializeApp(config);
+const db = app.database();
 
 export default db

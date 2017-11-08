@@ -65,6 +65,11 @@
 
   export default {
     name: 'register',
+    beforeRouteEnter(to, from, next) {
+      next(vm => {
+        Firebase.auth().currentUser && !Firebase.auth().currentUser.isAnonymous ? next('/') : next();
+      });
+    },
     data () {
       return {
         firstName: undefined,
@@ -76,8 +81,8 @@
     },
     methods: {
       register(event) {
-        Firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-          .then((user) => {
+        if (!(Firebase.auth().currentUser && Firebase.auth().currentUser.isAnonymous && this.convertAnonymousUser())) {
+          Firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => {
             user.updateProfile({
               firstName: this.firstName,
               lastName: this.lastName,
@@ -85,9 +90,31 @@
             });
             this.$router.push('/');
           }).catch((error) => {
-            //Handle error
+            const errorMessage = error.message;
+            const errorCode = error.code;
+            switch(errorCode) {
+              // TODO: Alert the user in a prettier way than through the default alert box
+              case 'auth/email-already-in-use':
+                alert('This email is already in use. Please sign in or use a different email.');
+                break;
+              case 'auth/invalid-email':
+                alert('Your email is invalid. Please check that it is typed correctly and try again.');
+                break;
+              case 'auth/weak-password':
+                alert('Your password must be a minimum of 6 characters.');
+                break;
+            }
           });
+        }
       },
+      convertAnonymousUser() {
+        const credential = Firebase.auth.EmailAuthProvider.credential(this.email, this.password);
+        Firebase.auth().currentUser.linkWithCredential(credential).then((user) => {
+          return true;
+        }).catch((error) => {
+          return false;
+        });
+      }
     },
     firebase () {
       return {};
