@@ -18,15 +18,15 @@ import 'vue-material/dist/vue-material.css';
 import 'vuetify/dist/vuetify.min.css';
 import 'vuetify/dist/vuetify.min.js';
 
-/***
+/**
  * Use https://material.io/color to find out the numbers.
  * Note that this is the theme for VueMaterial; Vuetify's is located in stylus/main.styl
  * and any changes should be made in both places for visual consistency.
  */
 Vue.material.registerTheme('default', {
   primary: {
-  	color: 'brown',
-  	hue: 700,
+    color: 'brown',
+    hue: 700,
   },
   secondary: {
     color: 'orange',
@@ -37,7 +37,7 @@ Vue.material.registerTheme('default', {
     hue: 200,
   },
   accentSecondary: {
-    color: '#CBAE82'
+    color: '#CBAE82',
   },
   accentTertiary: {
     color: 'brown',
@@ -45,9 +45,9 @@ Vue.material.registerTheme('default', {
   },
   warn: 'red',
   background: {
-      color: 'orange',
-      hue: 50,
-  }
+    color: 'orange',
+    hue: 50,
+  },
 });
 
 /* eslint-disable no-new */
@@ -55,5 +55,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App,
+  },
 });

@@ -44,7 +44,7 @@
           <template v-for="(ingredient, index) in pantry">
             <v-list-tile>
               <v-list-tile-content>
-                <v-list-tile-title>{{ingredient}}</v-list-tile-title>
+                <v-list-tile-title>{{ ingredient }}</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-menu left v-if="!pantryEditMode">
@@ -72,7 +72,7 @@
           <v-btn flat slot="activator"><v-icon>delete</v-icon></v-btn>
           <v-card>
             <v-card-title class="headline">Remove items?</v-card-title>
-            <v-card-text>You are about to remove <b>{{pantrySelections.length}}</b> items from your pantry. Are you sure you want to do this?</v-card-text>
+            <v-card-text>You are about to remove <b>{{ pantrySelections.length }}</b> items from your pantry. Are you sure you want to do this?</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" flat @click.native="showDeleteModal = false">Cancel</v-btn>
@@ -87,7 +87,7 @@
 
     <v-toolbar clipped-left dark color="primary">
       <v-toolbar-items>
-        <v-btn right flat @click.stop="showDrawer = !showDrawer"><v-icon>{{showDrawer ? 'close' : 'shopping_basket'}}</v-icon></v-btn>
+        <v-btn right flat @click.stop="showDrawer = !showDrawer"><v-icon>{{ showDrawer ? 'close' : 'shopping_basket' }}</v-icon></v-btn>
       </v-toolbar-items>
 
       <router-link to="/recipes"><v-toolbar-title class="white--text">Pantreats</v-toolbar-title></router-link>
@@ -104,7 +104,7 @@
           <v-card v-if="!isUserLoggedIn" style="width: 300px;" class="accent-tertiary">
             <v-alert :color="errorMessage ? 'error' : 'warning'" :icon="errorMessage ? 'warning' : 'priority_high'"
                      :value="errorMessage || warnMessage">
-              {{errorMessage ? errorMessage : warnMessage}}
+              {{ errorMessage ? errorMessage : warnMessage }}
             </v-alert>
             <v-card-actions style="margin: 16px; text-align: center">
               <v-layout column>
@@ -151,206 +151,203 @@
 </template>
 
 <script>
-  import Firebase from 'firebase';
-  import VCardMedia from "vuetify/src/components/VCard/VCardMedia";
-  import VIcon from "vuetify/src/components/VIcon/VIcon";
-  import VForm from "vuetify/src/components/VForm/VForm";
-  import VList from "vuetify/src/components/VList/VList";
-  import VDivider from "vuetify/es5/components/VDivider/VDivider";
-  import VNavigationDrawer from "vuetify/src/components/VNavigationDrawer/VNavigationDrawer";
-  import VToolbar from "vuetify/src/components/VToolbar/VToolbar";
-  import VCardTitle from "vuetify/src/components/VCard/VCardTitle";
-  import VBottomNav from "vuetify/es5/components/VBottomNav/VBottomNav";
+import Firebase from 'firebase';
+import VCardMedia from 'vuetify/src/components/VCard/VCardMedia';
+import VIcon from 'vuetify/src/components/VIcon/VIcon';
+import VForm from 'vuetify/src/components/VForm/VForm';
+import VList from 'vuetify/src/components/VList/VList';
+import VDivider from 'vuetify/es5/components/VDivider/VDivider';
+import VNavigationDrawer from 'vuetify/src/components/VNavigationDrawer/VNavigationDrawer';
+import VToolbar from 'vuetify/src/components/VToolbar/VToolbar';
+import VCardTitle from 'vuetify/src/components/VCard/VCardTitle';
+import VBottomNav from 'vuetify/es5/components/VBottomNav/VBottomNav';
 
-  export default {
-    name: 'MainNav',
-    components: {
-      VBottomNav,
-      VCardTitle,
-      VToolbar,
-      VNavigationDrawer,
-      VDivider,
-      VList,
-      VForm,
-      VIcon,
-      VCardMedia
-    },
-    data() {
-      return {
-        // UI state toggles
-        showMenu: undefined,
-        showDrawer: undefined,
-        isUserLoggedIn: undefined,
-        pantryEditMode: undefined,
-        showDeleteModal: undefined,
+export default {
+  name: 'MainNav',
+  components: {
+    VBottomNav,
+    VCardTitle,
+    VToolbar,
+    VNavigationDrawer,
+    VDivider,
+    VList,
+    VForm,
+    VIcon,
+    VCardMedia,
+  },
+  data() {
+    return {
+      // UI state toggles
+      showMenu: undefined,
+      showDrawer: undefined,
+      isUserLoggedIn: undefined,
+      pantryEditMode: undefined,
+      showDeleteModal: undefined,
 
-        // Login form
-        email: undefined,
-        password: undefined,
-        errorMessage: undefined,
-        warnMessage: undefined,
+      // Login form
+      email: undefined,
+      password: undefined,
+      errorMessage: undefined,
+      warnMessage: undefined,
 
-        ingredientsToAdd: [],
-        ingredients: [
-          {name: 'Flour'},
-          {name: 'Milk'},
-          {name: 'Eggs'},
-          {name: 'Salt'},
-          {name: 'Sugar'},
-          {name: 'Butter'}
-        ],
-        pantry: [],
-        pantrySelections: []
+      ingredientsToAdd: [],
+      ingredients: [
+        { name: 'Flour' },
+        { name: 'Milk' },
+        { name: 'Eggs' },
+        { name: 'Salt' },
+        { name: 'Sugar' },
+        { name: 'Butter' },
+      ],
+      pantry: [],
+      pantrySelections: [],
+    };
+  },
+  // TODO: The unauthenticated view is briefly visible on refresh; how can we avoid this?
+  mounted() {
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user && !user.isAnonymous) {
+        this.isUserLoggedIn = true;
+      }
+    });
+  },
+  watch: {
+    pantryEditMode(editMode) {
+      if (!editMode) {
+        this.pantrySelections = [];
       }
     },
-    // TODO: The unauthenticated view is briefly visible on refresh; how can we avoid this?
-    mounted: function() {
-      Firebase.auth().onAuthStateChanged((user) => {
-        if (user && !user.isAnonymous) {
-          this.isUserLoggedIn = true;
-        }
-      })
-    },
-    watch: {
-      pantryEditMode: function(editMode) {
-        if (!editMode) {
-          this.pantrySelections = [];
-        }
-      },
-      ingredientsToAdd: function(selections) {
-        let pantry = this.pantry;
-        if (selections.length) {
-          selections.forEach((ingredient) => {
-            this.ingredientsToAdd = [];
-            if (!(pantry.includes(ingredient))) {
-              // If the user isn't accounted for, sign them up anonymously
-              if (!Firebase.auth().currentUser) {
-                this.registerAnonymousUser();
-              }
-              pantry.push(ingredient);
-            } else {
-              let index = pantry.indexOf(ingredient);
-              pantry.splice(index, 1);
+    ingredientsToAdd(selections) {
+      const pantry = this.pantry;
+      if (selections.length) {
+        selections.forEach((ingredient) => {
+          this.ingredientsToAdd = [];
+          if (!(pantry.includes(ingredient))) {
+            // If the user isn't accounted for, sign them up anonymously
+            if (!Firebase.auth().currentUser) {
+              this.registerAnonymousUser();
             }
-          });
-          this.pantry = pantry;
-        }
-      },
-      pantry: function() {
-        // TODO: Rewrite to be more efficient
-        let ingredients = this.ingredients;
-        ingredients.forEach((ingredient) => {
-          if (this.pantry.includes(ingredient.name)) {
-            ingredient.group = 'In your pantry';
+            pantry.push(ingredient);
           } else {
-            ingredient.group = '';
+            const index = pantry.indexOf(ingredient);
+            pantry.splice(index, 1);
           }
         });
-        this.ingredients = ingredients;
+        this.pantry = pantry;
       }
     },
-    methods: {
-      selectAllPantryItems() {
-        let pantrySelections = this.pantrySelections;
-        if (this.pantry.length !== pantrySelections.length) {
-          this.pantry.forEach((ingredient) => {
-            if (!(pantrySelections.includes(ingredient))) {
-              pantrySelections.push(ingredient);
-            }
-          });
+    pantry() {
+      // TODO: Rewrite to be more efficient
+      const ingredients = this.ingredients;
+      ingredients.forEach((ingredient) => {
+        if (this.pantry.includes(ingredient.name)) {
+          ingredient.group = 'In your pantry';
         } else {
-          pantrySelections = [];
+          ingredient.group = '';
         }
-        this.pantrySelections = pantrySelections;
-      },
-      hideAndClearMenu() {
-        this.showMenu = false;
-        this.errorMessage = undefined;
-        this.warnMessage = undefined;
-        this.email = undefined;
-        this.password = undefined;
-      },
-      registerAnonymousUser() {
-        Firebase.auth().signInAnonymously();
-      },
-      login(event) {
-        Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
-          // Login was successful
-          this.hideAndClearMenu();
-          this.isUserLoggedIn = true;
-        })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            switch(errorCode) {
-              case 'auth/wrong-password':
-                this.errorMessage = 'Incorrect password.';
-                this.password = undefined;
-                break;
-              case 'auth/user-not-found':
-                this.errorMessage = 'No user was found with that email address.';
-                this.email = undefined;
-                break;
-              case 'auth/invalid-email':
-                this.errorMessage = 'Please check that your email is correct.';
-                break;
-              case 'auth/user-disabled':
-                this.errorMessage = 'Your account has been disabled. Please contact support for assistance.';
-                break;
-              default:
-                this.errorMessage = 'Something went wrong on our end. Please contact support for assistance.'; // This should never happen
-            }
-            console.log(error);
-          });
-        },
-      logout(event) {
-        Firebase.auth().signOut().then((result) => {
-          this.hideAndClearMenu();
-          this.isUserLoggedIn = false;
-        }, function(error) {
-
+      });
+      this.ingredients = ingredients;
+    },
+  },
+  methods: {
+    selectAllPantryItems() {
+      let pantrySelections = this.pantrySelections;
+      if (this.pantry.length !== pantrySelections.length) {
+        this.pantry.forEach((ingredient) => {
+          if (!(pantrySelections.includes(ingredient))) {
+            pantrySelections.push(ingredient);
+          }
         });
-      },
-      googleSignin(event) {
-        // TODO: Should anonymous users be able to convert through sign-in or do we want a dedicated "register with Google creds?"
-        const provider = new Firebase.auth.GoogleAuthProvider();
-        Firebase.auth().signInWithPopup(provider).then((result) => {
-          this.hideAndClearMenu();
-          this.isUserLoggedIn = true;
-        }).catch((error) => {
+      } else {
+        pantrySelections = [];
+      }
+      this.pantrySelections = pantrySelections;
+    },
+    hideAndClearMenu() {
+      this.showMenu = false;
+      this.errorMessage = undefined;
+      this.warnMessage = undefined;
+      this.email = undefined;
+      this.password = undefined;
+    },
+    registerAnonymousUser() {
+      Firebase.auth().signInAnonymously();
+    },
+    login(event) {
+      Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
+        // Login was successful
+        this.hideAndClearMenu();
+        this.isUserLoggedIn = true;
+      })
+        .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          const email = error.email;
-          const credential = error.credential;
           switch (errorCode) {
-            case 'auth/account-exists-with-different-credential':
-              // TODO: We *should* link the two accounts but it's pretty much irrelevant for this assignment:
-              // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInWithPopup
-              this.errorMessage = 'Please sign in with the method you used to create your account.';
+            case 'auth/wrong-password':
+              this.errorMessage = 'Incorrect password.';
+              this.password = undefined;
               break;
-            case 'auth/cancelled-popup-request':
-              this.warnMessage = 'Please only open one popup at a time.';
+            case 'auth/user-not-found':
+              this.errorMessage = 'No user was found with that email address.';
+              this.email = undefined;
               break;
-            case 'auth/popup-blocked':
-              this.errorMessage = 'Your browser blocked the login dialog.';
+            case 'auth/invalid-email':
+              this.errorMessage = 'Please check that your email is correct.';
               break;
-            case 'auth/popup-closed-by-user':
-              this.warnMessage = 'The popup was closed before you could be authenticated. Please try again.';
+            case 'auth/user-disabled':
+              this.errorMessage = 'Your account has been disabled. Please contact support for assistance.';
               break;
-            default: // i.e. errors the user can't fix
-              this.errorMessage = 'Something went wrong on our end. Please contact support for assistance.';
+            default:
+              this.errorMessage = 'Something went wrong on our end. Please contact support for assistance.'; // This should never happen
           }
           console.log(error);
         });
-      },
-      routeRegister(event) {
-        this.$router.push('/register');
-      },
     },
-    firebase () {
-      return {};
-    }
-  }
+    logout(event) {
+      Firebase.auth().signOut().then((result) => {
+        this.hideAndClearMenu();
+        this.isUserLoggedIn = false;
+      }, (error) => {
+
+      });
+    },
+    googleSignin(event) {
+      // TODO: Should anonymous users be able to convert through sign-in or do we want a dedicated "register with Google creds?"
+      const provider = new Firebase.auth.GoogleAuthProvider();
+      Firebase.auth().signInWithPopup(provider).then((result) => {
+        this.hideAndClearMenu();
+        this.isUserLoggedIn = true;
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.email;
+        const credential = error.credential;
+        switch (errorCode) {
+          case 'auth/account-exists-with-different-credential':
+            // TODO: We *should* link the two accounts but it's pretty much irrelevant for this assignment:
+            // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInWithPopup
+            this.errorMessage = 'Please sign in with the method you used to create your account.';
+            break;
+          case 'auth/cancelled-popup-request':
+            this.warnMessage = 'Please only open one popup at a time.';
+            break;
+          case 'auth/popup-blocked':
+            this.errorMessage = 'Your browser blocked the login dialog.';
+            break;
+          case 'auth/popup-closed-by-user':
+            this.warnMessage = 'The popup was closed before you could be authenticated. Please try again.';
+            break;
+          default: // i.e. errors the user can't fix
+            this.errorMessage = 'Something went wrong on our end. Please contact support for assistance.';
+        }
+        console.log(error);
+      });
+    },
+    routeRegister(event) {
+      this.$router.push('/register');
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -8,14 +8,14 @@
 </template>
 
 <script>
-  import MainNav from './partials/MainNav'
+import MainNav from './partials/MainNav';
 
-  export default {
-    name: 'app',
-    components: {
-      MainNav
-    }
-  }
+export default {
+  name: 'app',
+  components: {
+    MainNav,
+  },
+};
 </script>
 
 <style lang="stylus">

@@ -58,68 +58,71 @@
 </template>
 
 <script>
-  import Firebase from 'firebase';
-  import db from '../database';
-  import router from 'vue-router';
+import Firebase from 'firebase';
 
-
-  export default {
-    name: 'register',
-    beforeRouteEnter(to, from, next) {
-      next(vm => {
-        Firebase.auth().currentUser && !Firebase.auth().currentUser.isAnonymous ? next('/') : next();
-      });
-    },
-    data () {
-      return {
-        firstName: undefined,
-        lastName: undefined,
-        email: undefined,
-        college: undefined,
-        password: undefined,
-      };
-    },
-    methods: {
-      register(event) {
-        if (!(Firebase.auth().currentUser && Firebase.auth().currentUser.isAnonymous && this.convertAnonymousUser())) {
-          Firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => {
-            user.updateProfile({
-              firstName: this.firstName,
-              lastName: this.lastName,
-              college: this.college,
-            });
-            this.$router.push('/');
-          }).catch((error) => {
-            const errorMessage = error.message;
-            const errorCode = error.code;
-            switch(errorCode) {
-              // TODO: Alert the user in a prettier way than through the default alert box
-              case 'auth/email-already-in-use':
-                alert('This email is already in use. Please sign in or use a different email.');
-                break;
-              case 'auth/invalid-email':
-                alert('Your email is invalid. Please check that it is typed correctly and try again.');
-                break;
-              case 'auth/weak-password':
-                alert('Your password must be a minimum of 6 characters.');
-                break;
-            }
+export default {
+  name: 'register',
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      const userNotAnonymous = Firebase.auth().currentUser
+                               && !Firebase.auth().currentUser.isAnonymous;
+      if (userNotAnonymous) {
+        next('/');
+      } else {
+        next();
+      }
+    });
+  },
+  data() {
+    return {
+      firstName: undefined,
+      lastName: undefined,
+      email: undefined,
+      college: undefined,
+      password: undefined,
+    };
+  },
+  methods: {
+    register(event) {
+      const unregisteredAndNotAnonymous = !(Firebase.auth().currentUser
+                                              && Firebase.auth().currentUser.isAnonymous
+                                              && this.convertAnonymousUser());
+      if (unregisteredAndNotAnonymous) {
+        Firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => {
+          user.updateProfile({
+            firstName: this.firstName,
+            lastName: this.lastName,
+            college: this.college,
           });
-        }
-      },
-      convertAnonymousUser() {
-        const credential = Firebase.auth.EmailAuthProvider.credential(this.email, this.password);
-        Firebase.auth().currentUser.linkWithCredential(credential).then((user) => {
-          return true;
+          this.$router.push('/');
         }).catch((error) => {
-          return false;
+          const errorMessage = error.message;
+          const errorCode = error.code;
+          switch (errorCode) {
+            // TODO: Alert the user in a prettier way than through the default alert box
+            case 'auth/email-already-in-use':
+              alert('This email is already in use. Please sign in or use a different email.');
+              break;
+            case 'auth/invalid-email':
+              alert('Your email is invalid. Please check that it is typed correctly and try again.');
+              break;
+            case 'auth/weak-password':
+              alert('Your password must be a minimum of 6 characters.');
+              break;
+            default:
+              break;
+          }
         });
       }
     },
-    firebase () {
-      return {};
-    }
-  }
+    convertAnonymousUser() {
+      const credential = Firebase.auth.EmailAuthProvider.credential(this.email, this.password);
+      Firebase.auth().currentUser.linkWithCredential(credential)
+        .then(user => true)
+        .catch(error => false);
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

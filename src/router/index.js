@@ -11,15 +11,15 @@ export default new Router({
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
     },
     {
       path: '/recipes/submit',
-      component: RecipeSubmit
+      component: RecipeSubmit,
     },
-    { //Temporary path for testing recipe page
-      path: '/recipes/:id',
-      component: RecipePage
-    }
-  ]
+    {
+      path: '/recipes/:id', // Temporary path for testing recipe page
+      component: RecipePage,
+    },
+  ],
 });
