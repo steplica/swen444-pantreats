@@ -12,7 +12,6 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <button v-on:click="updateSearchResults">Update Recipes</button>
     </div>
 </template>
 
@@ -37,6 +36,11 @@
       },
       created: function() {
         this.updateSearchResults();
+      },
+      watch: {
+        sharedPantry() {
+          this.updateSearchResults();
+        }
       },
       methods: {
         updateSearchResults() {
