@@ -1,5 +1,4 @@
 <template>
-    <v-app class="secondary">
     <div id="recipe-submit-page">
         <div>
             <form validate @submit.stop.prevent="submitRecipe">
@@ -17,7 +16,7 @@
                         <!-- TODO: Make this required -->
                         <v-select v-model="ingredients" label="Ingredients" chips tags :hide-selected="true"
                                   :no-data-text="'No suggestions'"
-                            hint="Enter an ingredient (e.g. &quot;2 eggs&quot;) and press Tab to record it." persistent-hint>
+                            hint="Enter an ingredient (e.g. &quot;Eggs&quot;) and press Tab to record it." persistent-hint>
                         </v-select>
 
                         <br><br>
@@ -125,7 +124,6 @@
             </form>
         </div>
     </div>
-    </v-app>
 </template>
 
 <script>
@@ -226,7 +224,7 @@
           cookTime: (parseInt(this.cookTimeHr) * 60) + parseInt(this.cookTimeMin),
           servings: this.servings,
           cookware: this.cookware.filter(x => x.trim() !== ''),
-          photos: this.photos,
+          photos: this.photos, // TODO: Put 'No image' placeholder to prevent out of bounds reads later
           tags: this.tags.filter(x => x.trim() !== ''),
           steps: this.recipeSteps.map(x => x.text).filter(x => x.trim() !== ''),
         });

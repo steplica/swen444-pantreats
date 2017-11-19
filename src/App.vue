@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <v-app class="secondary">
-      <main-nav></main-nav>
-      <router-view></router-view>
+      <main-nav :sharedPantry="sharedPantry"></main-nav>
+      <router-view :sharedPantry="sharedPantry"></router-view>
     </v-app>
   </div>
 </template>
@@ -12,6 +12,11 @@
 
   export default {
     name: 'app',
+    data() {
+      return {
+        sharedPantry: []
+      }
+    },
     components: {
       MainNav
     }
@@ -25,5 +30,8 @@
 <style>
   html {
     overflow-y: auto;
+  }
+  a {
+    text-decoration: none !important; /* Vue Material doesn't play nice with Vuetify */
   }
 </style>
