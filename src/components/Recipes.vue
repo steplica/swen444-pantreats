@@ -12,6 +12,7 @@
                 </v-flex>
             </v-layout>
         </v-container>
+        <button v-on:click="updateSearchResults">Update Recipes</button>
     </div>
 </template>
 
@@ -28,6 +29,7 @@
       components: {
         RecipeCard
       },
+      props: ['sharedPantry'],
       data() {
         return {
           recipes: [] // TODO: Use VueFire
@@ -35,18 +37,21 @@
       },
       created: function() {
         this.updateSearchResults();
-        console.log(this.recipes);
       },
       methods: {
         updateSearchResults() {
           // TODO: Replace with actual updates based on pantry ingredients
           // For now, we just load the recipes that are in the database
+          this.recipes = [];
           let recipes = this.recipes;
 
           recipesRef.orderByChild('rating').on('child_added', (snapshot) => {
             let recipe = snapshot.val();
             recipe['id'] = snapshot.key; // TODO: Would it make sense to just store this in the database?
-            recipes.push(recipe);
+
+            if (recipe.ingredients.every(ingredient => this.sharedPantry.includes(ingredient))) {
+              recipes.push(recipe);
+            }
           });
 
           this.recipes = recipes.reverse();

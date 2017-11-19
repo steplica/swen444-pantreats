@@ -41,7 +41,7 @@
           <v-btn v-else icon flat @click="selectAllPantryItems()"><v-icon>select_all</v-icon></v-btn>
         </v-toolbar>
         <v-list dense class="secondary">
-          <template v-for="(ingredient, index) in pantry">
+          <template v-for="(ingredient, index) in sharedPantry">
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-title>{{ingredient}}</v-list-tile-title>
@@ -50,7 +50,7 @@
                 <v-menu left v-if="!pantryEditMode">
                   <v-btn icon slot="activator"><v-icon>more_vert</v-icon></v-btn>
                   <v-list dense>
-                    <v-list-tile avatar @click="pantry.splice(index, 1)">
+                    <v-list-tile avatar @click="sharedPantry.splice(index, 1)">
                       <v-list-tile-avatar class="dense"><v-icon class="error--text">delete</v-icon></v-list-tile-avatar>
                       <v-list-tile-content class="dense error--text">Delete</v-list-tile-content>
                     </v-list-tile>
@@ -77,7 +77,7 @@
               <v-spacer></v-spacer>
               <v-btn color="primary" flat @click.native="showDeleteModal = false">Cancel</v-btn>
               <v-btn color="error" flat
-                     @click.native="pantry = pantry.filter(function(e){return !pantrySelections.includes(e)});
+                     @click.native="sharedPantry = sharedPantry.filter(function(e){return !pantrySelections.includes(e)});
                      showDeleteModal = false;">Delete</v-btn>
             </v-card-actions>
           </v-card>
@@ -152,6 +152,7 @@
 
 <script>
   import Firebase from 'firebase';
+  import db from '../database';
   import VCardMedia from "vuetify/src/components/VCard/VCardMedia";
   import VIcon from "vuetify/src/components/VIcon/VIcon";
   import VForm from "vuetify/src/components/VForm/VForm";
@@ -175,6 +176,7 @@
       VIcon,
       VCardMedia
     },
+    props: ['sharedPantry'],
     data() {
       return {
         // UI state toggles
@@ -197,9 +199,8 @@
           {name: 'Eggs'},
           {name: 'Salt'},
           {name: 'Sugar'},
-          {name: 'Butter'}
+          {name: 'Butter'},
         ],
-        pantry: [],
         pantrySelections: []
       }
     },
@@ -218,7 +219,7 @@
         }
       },
       ingredientsToAdd: function(selections) {
-        let pantry = this.pantry;
+        let pantry = this.sharedPantry;
         if (selections.length) {
           selections.forEach((ingredient) => {
             this.ingredientsToAdd = [];
@@ -227,20 +228,21 @@
               if (!Firebase.auth().currentUser) {
                 this.registerAnonymousUser();
               }
+              db.ref('users/' + Firebase.auth().currentUser.uid).child('ingredients').push(ingredient);
               pantry.push(ingredient);
             } else {
               let index = pantry.indexOf(ingredient);
               pantry.splice(index, 1);
             }
           });
-          this.pantry = pantry;
+          this.sharedPantry = pantry;
         }
       },
-      pantry: function() {
+      sharedPantry() {
         // TODO: Rewrite to be more efficient
         let ingredients = this.ingredients;
         ingredients.forEach((ingredient) => {
-          if (this.pantry.includes(ingredient.name)) {
+          if (this.sharedPantry.includes(ingredient.name)) {
             ingredient.group = 'In your pantry';
           } else {
             ingredient.group = '';
@@ -252,8 +254,8 @@
     methods: {
       selectAllPantryItems() {
         let pantrySelections = this.pantrySelections;
-        if (this.pantry.length !== pantrySelections.length) {
-          this.pantry.forEach((ingredient) => {
+        if (this.sharedPantry.length !== pantrySelections.length) {
+          this.sharedPantry.forEach((ingredient) => {
             if (!(pantrySelections.includes(ingredient))) {
               pantrySelections.push(ingredient);
             }
