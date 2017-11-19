@@ -1,6 +1,6 @@
 <template>
     <v-card hover :to="'/recipes/' + String(this.id)" class="black--text">
-        <v-card-title class="title accent-secondary">
+        <v-card-title class="title accentSecondary">
             {{name}}
         </v-card-title>
         <v-card-media class="recipe-image" :src="src" height="150px"></v-card-media>

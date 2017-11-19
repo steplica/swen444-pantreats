@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- TODO: Move this into a separate Pantry component -->
-    <v-navigation-drawer v-model="showDrawer" width="500" :temporary="!showDeleteModal" :persistent="showDeleteModal" class="secondary">
+    <v-navigation-drawer fixed v-model="showDrawer" width="500" :temporary="!showDeleteModal" :persistent="showDeleteModal" class="secondary">
       <v-toolbar flat dark color="primary">
         <v-toolbar-title class="white--text">Pantry</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -31,7 +31,7 @@
       </v-toolbar>
 
       <div>
-        <v-toolbar dense flat color="accent-secondary">
+        <v-toolbar dense flat color="accentSecondary">
           <span class="primary--text subheading"><b>My Ingredients</b></span>
           <v-spacer></v-spacer>
           <v-toolbar-items v-if="pantryEditMode">
@@ -101,7 +101,7 @@
           </v-btn>
 
           <!-- Login form -->
-          <v-card v-if="!isUserLoggedIn" style="width: 300px;" class="accent-tertiary">
+          <v-card v-if="!isUserLoggedIn" style="width: 300px;" class="accentTertiary">
             <v-alert :color="errorMessage ? 'error' : 'warning'" :icon="errorMessage ? 'warning' : 'priority_high'"
                      :value="errorMessage || warnMessage">
               {{errorMessage ? errorMessage : warnMessage}}
@@ -122,8 +122,8 @@
           </v-card>
 
           <!-- Settings -->
-          <v-card v-if="isUserLoggedIn" class="accent-tertiary">
-              <v-list class="accent-tertiary">
+          <v-card v-if="isUserLoggedIn" class="accentTertiary">
+              <v-list class="accentTertiary">
                 <v-list-tile>
                   <v-list-tile-action>
                     <v-icon >settings</v-icon>
