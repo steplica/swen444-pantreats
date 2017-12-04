@@ -1,6 +1,6 @@
 <template>
     <v-layout row justify-center>
-        <md-button class="activatorButton md-raised md-accent md-dense" slot="activator" @click.native.stop="reviewDialog=true">Review</md-button>
+        <md-button id="reviewButton" class="activatorButton md-raised md-accent md-dense" slot="activator" @click.native.stop="reviewDialog=true">Review</md-button>
         <v-dialog v-model="reviewDialog" width="600px" padding="10px" persistent >
             <v-card>
                 <v-card-title class="headline" style="font-weight: bold">Rate and Review</v-card-title>
@@ -48,8 +48,8 @@
 </script>
 
 <style>
-    .activatorButton {
-        margin: 0 0 0 0;
+    #reviewButton {
+        margin: 0 0 0 0 !important;
         border-radius:0px;
         flex: 1;
         width: 50px;

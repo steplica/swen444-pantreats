@@ -1,9 +1,9 @@
 <template>
     <v-layout row justify-center>
-        <md-button class="activatorButton md-raised md-accent md-dense" slot="activator" @click.native.stop="reportDialog=true">Report</md-button>
+        <md-button id="reportButton" class="activatorButton md-raised md-accent md-dense" slot="activator" @click.native.stop="reportDialog=true">Report</md-button>
         <v-dialog v-model="reportDialog" width="600px" padding="10px" persistent >
             <v-card>
-                <v-card-title class="headline" font-weight: bold>Report Inappropriate Content</v-card-title>
+                <v-card-title class="headline">Report Inappropriate Content</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-radio-group v-model="reportRadio">
@@ -58,8 +58,8 @@
 </script>
 
 <style>
-    .activatorButton {
-        margin: 0 0 0 0;
+    #reportButton {
+        margin: 0 0 0 0 !important;
         border-radius:0px;
         flex: 1;
         width: auto;
