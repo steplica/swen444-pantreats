@@ -196,7 +196,7 @@
         const fileList = [];
         const photoList = [];
 
-        files.forEach((file) => {
+        Array.from(Object.values(files)).forEach((file) => {
             fileList.push({src: window.URL.createObjectURL(file)});
 
             const uploadTask = storageRef.child('images/recipes/' + uuidV4()).put(file);
@@ -225,9 +225,11 @@
           servings: this.servings,
           cookware: this.cookware.filter(x => x.trim() !== ''),
           photos: this.photos, // TODO: Put 'No image' placeholder to prevent out of bounds reads later
-          tags: this.tags.filter(x => x.trim() !== ''),
+          //tags: this.tags.filter(x => x.trim() !== ''),
           steps: this.recipeSteps.map(x => x.text).filter(x => x.trim() !== ''),
         });
+
+        this.$router.push('/');
       },
       firebase() {},
     }
