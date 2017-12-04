@@ -12,7 +12,19 @@ Vue.config.productionTip = false;
 
 Vue.use(VueFire);
 Vue.use(VueMaterial);
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+  theme: {
+    primary: '#5D4037',
+    secondary: '#FFF3E0',
+    accent: '#B0BEC5',
+    accentSecondary: '#CBAE82',
+    accentTertiary: '#BCAAA4',
+    info: '#42A5F5',
+    warning: '#FFA000',
+    error: '#D50000',
+    success: '#81C784'
+  }
+});
 
 import 'vue-material/dist/vue-material.css';
 import 'vuetify/dist/vuetify.min.css';
@@ -48,6 +60,7 @@ Vue.material.registerTheme('default', {
       color: 'orange',
       hue: 50,
   }
+  /* TODO: Add missing colors/fix disparity */
 });
 
 /* eslint-disable no-new */

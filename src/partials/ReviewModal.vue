@@ -3,11 +3,11 @@
         <md-button class="activatorButton md-raised md-accent md-dense" slot="activator" @click.native.stop="reviewDialog=true">Review</md-button>
         <v-dialog v-model="reviewDialog" width="600px" padding="10px" persistent >
             <v-card>
-                <v-card-title class="headline" font-weight: bold>Rate and Review</v-card-title>
+                <v-card-title class="headline" style="font-weight: bold">Rate and Review</v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <span class="md-subheading ratingTitle">Your Rating:</span>
-                    <md-rating-bar v-model="reviewRating" class="md-primary accent-tertiary"></md-rating-bar>
+                    <md-rating-bar v-model="reviewRating" class="md-primary accentTertiary"></md-rating-bar>
                     <v-text-field v-model="reviewInfo" label="Your Review (Optional)" multi-line></v-text-field>
                 </v-card-text>
                 <v-divider></v-divider>
