@@ -94,6 +94,7 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
+        <v-btn v-if="isUserLoggedIn"  to="/recipes/submit" flat style="color: white !important;">Submit a Recipe</v-btn>
         <v-menu bottom offset-y v-model="showMenu" :offset-overflow="true" :close-on-content-click="false">
           <v-btn v-if="!isUserLoggedIn" flat slot="activator">Log in / Register</v-btn>
           <v-btn flat v-if="isUserLoggedIn" slot="activator">

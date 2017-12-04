@@ -1,6 +1,11 @@
 <template>
     <div id="recipe-search-page">
         <v-container fluid grid-list-lg>
+            <v-layout v-if="!sharedPantry.length" row>
+                <v-flex xs6>
+                    <img src="/static/empty_pantry.png"/>
+                </v-flex>
+            </v-layout>
             <v-layout row wrap>
                 <v-flex xs3 v-for="recipe in recipes" :key="recipe.id">
                     <recipe-card :name="recipe.name"
@@ -34,7 +39,7 @@
           recipes: [] // TODO: Use VueFire
         };
       },
-      created: function() {
+      created: function () {
         this.updateSearchResults();
       },
       watch: {
@@ -60,6 +65,6 @@
 
           this.recipes = recipes.reverse();
         }
-      },
+      }
     }
 </script>
